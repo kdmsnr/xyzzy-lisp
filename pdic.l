@@ -43,7 +43,7 @@
 
 ; PDICとDDE通信でやりとり
 (defun pdic-dde-comunicate (words)
-  (setq chan (dde-initiate "PDICW" "Dictionary"))
+  (setq chan (dde-initiate "PDICW" "Dictionary")) ; "PDICU" for PDIC/Unicode
   (when chan
     (dde-poke chan "Open" "")
     (dde-poke chan "PopupSearchConfig" "w2")
