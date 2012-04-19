@@ -1,0 +1,47 @@
+(cd "~/")
+
+;; C-x u (undo)
+(global-set-key '(#\C-x #\u) 'undo)
+
+(global-set-key '(#\M-/) 'dabbrev-expand)
+ 
+;; C-o , C-\ (IME起動)
+(global-set-key #\C-o 'toggle-ime)
+(global-set-key #\C-\\ 'toggle-ime)
+ 
+;; C-s, C-r (インクリメンタルサーチ）
+(load-library "isearch")
+
+;; M-% (置換)
+(global-set-key #\M-% 'replace-string)
+
+ 
+;;swith to new window after rename
+(global-set-key '(#\C-x #\C-w) 'emacs-write-file) 
+
+;; rectangle
+(global-set-key '(#\C-x #\r #\d) 'delete-rectangle)
+(global-set-key '(#\C-x #\r #\k) 'kill-rectangle)
+(global-set-key '(#\C-x #\r #\o) 'open-rectangle)
+(global-set-key '(#\C-x #\r #\t) 'string-rectangle)
+(global-set-key '(#\C-x #\r #\y) 'yank-rectangle)
+(global-set-key '(#\C-x #\r #\w) 'copy-rectangle)
+
+;; C-x h (全選択)
+(global-set-key '(#\C-x #\h) 'selection-whole-buffer)
+
+;; *scratch* を終了時に保存
+(add-hook '*kill-xyzzy-hook*
+          #'(lambda ()
+              (set-buffer (find-buffer "*scratch*"))
+              (write-file "~/scratch"))) 
+
+;; *scratch* を起動時にロード
+(add-hook '*post-startup-hook*
+          #'(lambda ()
+              (set-buffer (find-buffer "*scratch*"))
+              (insert-file "~/scratch")))
+
+;; pdic
+(load-library "pdic.l")
+
