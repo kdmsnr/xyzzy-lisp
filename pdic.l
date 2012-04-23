@@ -1,22 +1,22 @@
 ;; pdic.l
 ;;
-;; å±¥æ­´
-;; 03.05.18 ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é–¢ã™ã‚‹ä¸å…·åˆã‚’ä¿®æ­£
-;; 03.05.17 åˆç‰ˆ
+;; —š—ğ
+;; 03.05.18 ƒƒjƒ…[‚ÉŠÖ‚·‚é•s‹ï‡‚ğC³
+;; 03.05.17 ‰”Å
 
 
-;; ä½¿ã„æ–¹ .xyzzy ã«ä»¥ä¸‹ã‚’è¿½åŠ 
+;; g‚¢•û .xyzzy ‚ÉˆÈ‰º‚ğ’Ç‰Á
 ;;(load-library "pdic.l")
 
 
-; PDICã®å ´æ‰€
-(defvar *pdic-path* "c:/Program Files/Personal Dictionary/pdicw32.exe")
-; å˜èªå¸³ãƒãƒƒãƒ•ã‚¡ã®åå‰
+; PDIC‚ÌêŠ
+(defvar *pdic-path* "C:/Program Files/Personal Dictionary/PDICU.EXE")
+; ’PŒê’ ƒoƒbƒtƒ@‚Ì–¼‘O
 (defvar *pdic-wordbook* "*PDIC Wordbook*")
-; ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—è¡¨ç¤ºã‚’ã™ã‚‹ã‹å¦ã‹
+; ƒ|ƒbƒvƒAƒbƒv•\¦‚ğ‚·‚é‚©”Û‚©
 (defvar *pdic-output-popup-p* t)
 
-; è¾æ›¸ã‚’å¼•ãå˜èªã‚’å–ã£ã¦ãã‚‹
+; «‘‚ğˆø‚­’PŒê‚ğæ‚Á‚Ä‚­‚é
 (defun pdic-get-current-words-or-selection ()
   (if (pre-selection-p)
       (buffer-substring (selection-point) (selection-mark))
@@ -41,9 +41,9 @@
        (goto-eol)
        (point)))))
 
-; PDICã¨DDEé€šä¿¡ã§ã‚„ã‚Šã¨ã‚Š
+; PDIC‚ÆDDE’ÊM‚Å‚â‚è‚Æ‚è
 (defun pdic-dde-comunicate (words)
-  (setq chan (dde-initiate "PDICW" "Dictionary")) ; "PDICU" for PDIC/Unicode
+  (setq chan (dde-initiate "PDICU" "Dictionary"))
   (when chan
     (dde-poke chan "Open" "")
     (dde-poke chan "PopupSearchConfig" "w2")
@@ -53,7 +53,7 @@
         (progn
           (dde-poke chan "Close" "")
               (dde-terminate chan)
-          (popup-string "è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚" (point))
+          (popup-string "Œ©‚Â‚©‚è‚Ü‚¹‚ñB" (point))
           (return-from pdic-dde-comunicate nil)))
     (dde-poke chan "Format" "$w@@$j@@$x")
     (dde-poke chan "Config" "t3")
@@ -64,44 +64,44 @@
     (dde-poke chan "Close" "")
     (dde-terminate chan)
     (return-from pdic-dde-comunicate answer))
-  (message "DDEã‚»ãƒƒã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸã€‚")
+  (message "DDEƒZƒbƒVƒ‡ƒ“‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½B")
   (return-from pdic-dde-comunicate nil))
 
-; PDICã§è¾æ›¸ã‚’å¼•ã
+; PDIC‚Å«‘‚ğˆø‚­
 (defun pdic-consult-dictionary ()
   (interactive)
   (continue-pre-selection)
   (setq words (pdic-get-current-words-or-selection))
   (setq answer (pdic-dde-comunicate words))
-; ã‚¨ãƒ©ãƒ¼ã ã£ãŸã‚‰ä½•ã‚‚ã›ãšã«ãƒªã‚¿ãƒ¼ãƒ³
+; ƒGƒ‰[‚¾‚Á‚½‚ç‰½‚à‚¹‚¸‚ÉƒŠƒ^[ƒ“
   (unless answer (return-from pdic-consult-dictionary nil))
-; çµæœè¡¨ç¤º
+; Œ‹‰Ê•\¦
   (if *pdic-output-popup-p*
       (popup-string answer (point))
     (with-output-to-temp-buffer ("*PDIC output*")
       (format t "~A" answer))))
 
-; PDICã§è¾æ›¸ã‚’å¼•ã„ã¦ã€å˜èªå¸³ã«è¿½åŠ ã™ã‚‹
+; PDIC‚Å«‘‚ğˆø‚¢‚ÄA’PŒê’ ‚É’Ç‰Á‚·‚é
 (defun pdic-add-words ()
   (interactive)
   (continue-pre-selection)
   (setq words (pdic-get-current-words-or-selection))
   (setq answer (pdic-dde-comunicate words))
-; ã‚¨ãƒ©ãƒ¼ã ã£ãŸã‚‰ä½•ã‚‚ã›ãšã«ãƒªã‚¿ãƒ¼ãƒ³
+; ƒGƒ‰[‚¾‚Á‚½‚ç‰½‚à‚¹‚¸‚ÉƒŠƒ^[ƒ“
   (unless answer (return-from pdic-add-words nil))
-; çµæœè¡¨ç¤º
+; Œ‹‰Ê•\¦
   (if *pdic-output-popup-p*
       (popup-string answer (point))
     (with-output-to-temp-buffer ("*PDIC output*")
       (format t "~A" answer)))
-; å˜èªå¸³ã«è¿½åŠ 
+; ’PŒê’ ‚É’Ç‰Á
   (setq buffer (get-buffer-create *pdic-wordbook*))
   (save-excursion
     (set-buffer buffer)
     (goto-char (point-max))
     (insert answer)))
 
-; è¾æ›¸å¼•ããƒ¢ãƒ¼ãƒ‰ï¼ˆPDICç‰ˆï¼‰
+; «‘ˆø‚«ƒ‚[ƒhiPDIC”Åj
 (defvar-local pdic-mode nil)
 (defvar *pdic-mode-map*
   (let ((keymap (make-sparse-keymap)))
@@ -149,33 +149,32 @@
 
 
 ;================================
-; ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ã‚„ ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‰ã®è¨­å®š
+; ƒƒjƒ…[ ‚â ƒL[ƒoƒCƒ“ƒh‚Ìİ’è
 ;================================
-; ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚„ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¾æ›¸ã‚’å¼•ãã‚³ãƒãƒ³ãƒ‰ã®å·®ã—æ›¿ãˆ
-; ä½ç½®(=21ã¨ã‹8)ã«ã¤ã„ã¦ã¯ã€è‡ªåˆ†ã§èª¿æ•´ã—ã¦ãã ã•ã„ã€‚
-; ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã¾ã¾ã§ã‚ã‚Œã°ã€ã€Œ21(ã‚ã‚‹ã„ã¯8)ã€ã§ OK ã®ã¯ãšã€‚
+; ƒc[ƒ‹ƒo[‚âƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚Ì«‘‚ğˆø‚­ƒRƒ}ƒ“ƒh‚Ì·‚µ‘Ö‚¦
+; ˆÊ’u(=21‚Æ‚©8)‚É‚Â‚¢‚Ä‚ÍA©•ª‚Å’²®‚µ‚Ä‚­‚¾‚³‚¢B
+; ƒfƒtƒHƒ‹ƒg‚Ì‚Ü‚Ü‚Å‚ ‚ê‚ÎAu21(‚ ‚é‚¢‚Í8)v‚Å OK ‚Ì‚Í‚¸B
 (add-hook '*post-startup-hook*
           #'(lambda ()
               (let ((tools (get-menu *app-menu* 'ed::tools)))
-; ã‚‚ã¨ã‚‚ã¨ã®è¾æ›¸ã‚’å¼•ãã‚³ãƒãƒ³ãƒ‰ã‚’æ¶ˆã—ã¦
+; ‚à‚Æ‚à‚Æ‚Ì«‘‚ğˆø‚­ƒRƒ}ƒ“ƒh‚ğÁ‚µ‚Ä
                 (delete-menu tools 21 t)
                 (delete-menu *app-popup-menu* 8 t)
-; ã‹ã‚ã‚Šã«ã€PDIC ã§è¾æ›¸ã‚’å¼•ãã‚³ãƒãƒ³ãƒ‰ã®è¿½åŠ 
+; ‚©‚í‚è‚ÉAPDIC ‚Å«‘‚ğˆø‚­ƒRƒ}ƒ“ƒh‚Ì’Ç‰Á
                 (setq *dictionary-popup-menu*
                       (define-popup-menu
-                        (:item nil "è¾æ›¸å¼•ã(&E)"
+                        (:item nil "«‘ˆø‚«(&E)"
                          'pdic-consult-dictionary)
-                        (:item nil "è¾æ›¸å¼•ãï¼‹å˜èªå¸³è¿½åŠ (&R)"
+                        (:item nil "«‘ˆø‚«{’PŒê’ ’Ç‰Á(&R)"
                          'pdic-add-words)
                         :sep
-                        (:item nil "è¾æ›¸å¼•ããƒ¢ãƒ¼ãƒ‰(&J)"
+                        (:item nil "«‘ˆø‚«ƒ‚[ƒh(&J)"
                          'pdic-mode
                          #'(lambda () (if pdic-mode :check)))))
-                (insert-popup-menu tools 21 *dictionary-popup-menu* "è¾æ›¸(&I)")
-                (insert-popup-menu *app-popup-menu* 8 *dictionary-popup-menu* " è¾æ›¸(&I)"))))
-; ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‰ã®è¨­å®š
-; å…ƒã®è¾æ›¸å¼•ãã‚³ãƒãƒ³ãƒ‰ã‚’ä¸Šæ›¸ãã—ã¾ã™ã€‚
+                (insert-popup-menu tools 21 *dictionary-popup-menu* "«‘(&I)")
+                (insert-popup-menu *app-popup-menu* 8 *dictionary-popup-menu* " «‘(&I)"))))
+; ƒL[ƒoƒCƒ“ƒh‚Ìİ’è
+; Œ³‚Ì«‘ˆø‚«ƒRƒ}ƒ“ƒh‚ğã‘‚«‚µ‚Ü‚·B
 (define-key spec-map #\e 'pdic-consult-dictionary)
 (define-key spec-map #\r 'pdic-add-words)
 (define-key spec-map #\j 'pdic-mode)
-
