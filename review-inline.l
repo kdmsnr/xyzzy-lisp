@@ -8,6 +8,7 @@
   (insert (concat "@<" cmd ">{}"))
   (backward-char)
 )
+(global-set-key '(#\C-c #\l) 'review-inline)
 
 (add-hook '*text-mode-hook*
   (lambda ()

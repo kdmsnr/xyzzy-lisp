@@ -45,3 +45,6 @@
 ;; pdic
 (load-library "pdic.l")
 
+;; review
+(load-library "review-inline.l")
+
