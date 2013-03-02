@@ -1,4 +1,7 @@
 ;; review-inline
+
+(push '("\\.re$" . text-mode) *auto-mode-alist*)
+
 (defun review-inline()
   (interactive)
   (setq cmd (read-string "ReVIEW inline command: "))
