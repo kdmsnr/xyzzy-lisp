@@ -4,7 +4,8 @@
 
 (defun review-inline()
   (interactive)
-  (setq cmd (read-string "ReVIEW inline command: "))
+  (setq input (read-string "ReVIEW inline command: "))
+  (if (equal input "") (setq cmd "b") (setq cmd input))
   (insert (concat "@<" cmd ">{}"))
   (backward-char)
 )
