@@ -10,7 +10,7 @@
 
 
 ; PDICの場所
-(defvar *pdic-path* "C:/Program Files/Personal Dictionary/PDICU.EXE")
+(defvar *pdic-path* "C:/Program Files/Personal Dictionary (Unicode)/PDICU.EXE")
 ; 単語帳バッファの名前
 (defvar *pdic-wordbook* "*PDIC Wordbook*")
 ; ポップアップ表示をするか否か
